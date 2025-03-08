@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="generator" content="Typelevel Laika + Helium Theme" />
-  <title>Roguelike Starter-kit</title>
+  <title>Terminal Emulators</title>
   
   
   <meta name="description" content="An Indigo extension for rendering terminal-style games and roguelikes in particular."/>
@@ -41,7 +41,7 @@
     
   </div>
 
-  <a class="icon-link glyph-link" href="#"><i class="icofont-laika home" title="Home">&#xef47;</i></a>
+  <a class="icon-link glyph-link" href="index.html"><i class="icofont-laika home" title="Home">&#xef47;</i></a>
 
   <div class="row links">
     
@@ -68,11 +68,11 @@
   </div>
 
   <ul class="nav-list">
-    <li class="level1 active nav-node"><a href="#">Roguelike Starter-kit</a></li>
+    <li class="level1 nav-node"><a href="index.html">Roguelike Starter-kit</a></li>
     <li class="level2 nav-leaf"><a href="roguelikes-and-indigo.html">Roguelikes &amp; Indigo</a></li>
     <li class="level2 nav-leaf"><a href="artwork.html">Artwork</a></li>
     <li class="level2 nav-leaf"><a href="terminal-materials.html">The Terminal Material</a></li>
-    <li class="level2 nav-leaf"><a href="terminal-emulators.html">Terminal Emulators</a></li>
+    <li class="level2 active nav-leaf"><a href="#">Terminal Emulators</a></li>
     <li class="level2 nav-leaf"><a href="terminal-ui.html">Terminal UI</a></li>
     <li class="level1 nav-node"><a href="../examples/">Examples</a></li>
     <li class="level2 nav-node"><a href="../examples/fragment/">Fragment</a></li>
@@ -86,10 +86,11 @@
 
       
 <nav id="page-nav">
-  <p class="header"><a href="#">Roguelike Starter-kit</a></p>
+  <p class="header"><a href="#">Terminal Emulators</a></p>
 
   <ul class="nav-list">
-    <li class="level1 nav-leaf"><a href="#installation">Installation</a></li>
+    <li class="level1 nav-node"><a href="#the-terminalemulator-and-the-rogueterminalemulator">The <code>TerminalEmulator</code> and the <code>RogueTerminalEmulator</code></a></li>
+    <li class="level2 nav-leaf"><a href="#rendering-with-clonetiles">Rendering with <code>CloneTiles</code></a></li>
   </ul>
 
   <p class="footer"></p>
@@ -98,19 +99,18 @@
 
       <main class="content">
 
-        <h1 id="roguelike-starter-kit" class="title">Roguelike Starter-kit</h1>
-        <p><img src="../img/roguelike.gif" alt="Roguelike ascii art in Indigo" title="Roguelike ascii art in Indigo"></p>
-        <p>The <a href="https://github.com/PurpleKingdomGames/roguelike-starterkit">Roguelike Starter-kit</a> is a library for use with <a href="https://indigoengine.io/">Indigo</a> to provide terminal-like rendering functionality specifically for ASCII art style games, and roguelike games in particular.</p>
-        <p>All the examples and demos in these docs are presented using <a href="https://indigoengine.io/">Indigo</a>.</p>
+        <h1 id="terminal-emulators" class="title">Terminal Emulators</h1>
         
-        <h2 id="installation" class="section"><a class="anchor-link left" href="#installation"><i class="icofont-laika link">&#xef71;</i></a>Installation</h2>
-        <p>Check the repo for the <a href="https://github.com/PurpleKingdomGames/roguelike-starterkit/releases">latest release number</a>, and substitute the <code>x.y.z</code> below accordingly.</p>
-        <p>sbt</p>
-        <pre><code>libraryDependencies += &quot;io.indigoengine&quot; %%% &quot;roguelike-starterkit&quot; % &quot;x.y.z&quot;</code></pre>
-        <p>Mill</p>
-        <pre><code>def ivyDeps = Agg(ivy&quot;io.indigoengine::roguelike-starterkit::x.y.z&quot;)</code></pre>
-        <p>Scala-CLI</p>
-        <pre><code>//&gt; using dep io.indigoengine::roguelike-starterkit:x.y.z</code></pre>
+        <h2 id="the-terminalemulator-and-the-rogueterminalemulator" class="section"><a class="anchor-link left" href="#the-terminalemulator-and-the-rogueterminalemulator"><i class="icofont-laika link">&#xef71;</i></a>The <code>TerminalEmulator</code> and the <code>RogueTerminalEmulator</code></h2>
+        <p>The terminal emulators are the foundation of the library, and provide a simple &#39;terminal-like&#39; object you can use to represent grids of ASCII tiles. They come in two flavors, both of which have the same interface but behave differently:</p>
+        <ol class="arabic">
+          <li>The <code>TerminalEmulator</code> is the recommended default. It is safe and immutable and easy to use, perfect for getting started. The drawback of the <code>TerminalEmulator</code> is that the performance isn&#39;t brilliant, and at some point you may find it necessary to start caching results (typically in your view model).</li>
+          <li>The <code>RogueTerminalEmulator</code> is a more dangerous version of the <code>TerminalEmulator</code>! It is a mutable structure, and as such, has much better performance characteristics. As with all mutable data types, it must be handled with more care. Generally speaking though, you should be able to use it as a drop in replacement for the <code>TerminalEmulator</code> without the need for caching or even holding long term instances of the terminal object.</li>
+        </ol>
+        
+        <h3 id="rendering-with-clonetiles" class="section"><a class="anchor-link left" href="#rendering-with-clonetiles"><i class="icofont-laika link">&#xef71;</i></a>Rendering with <code>CloneTiles</code></h3>
+        <p>To render the contents of a <code>TerminalEmulator</code> or a <code>RogueTerminalEmulator</code> we need to output <code>CloneTiles</code>.</p>
+        <p>Performance will vary by scene complexity, specifically how many unique colour combinations you have in place. In other words, if all your tiles are identical, the scene will be boring but rendering quickly. If every tile is unique then rendering will be slow(er).</p>
 
         
 <hr class="footer-rule"/>

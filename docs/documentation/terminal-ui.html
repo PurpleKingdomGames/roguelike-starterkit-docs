@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="generator" content="Typelevel Laika + Helium Theme" />
-  <title>Examples</title>
+  <title>Terminal UI</title>
   
   
   <meta name="description" content="An Indigo extension for rendering terminal-style games and roguelikes in particular."/>
@@ -41,7 +41,7 @@
     
   </div>
 
-  <a class="icon-link glyph-link" href="../documentation/"><i class="icofont-laika home" title="Home">&#xef47;</i></a>
+  <a class="icon-link glyph-link" href="index.html"><i class="icofont-laika home" title="Home">&#xef47;</i></a>
 
   <div class="row links">
     
@@ -68,16 +68,16 @@
   </div>
 
   <ul class="nav-list">
-    <li class="level1 nav-node"><a href="../documentation/">Roguelike Starter-kit</a></li>
-    <li class="level2 nav-leaf"><a href="../documentation/roguelikes-and-indigo.html">Roguelikes &amp; Indigo</a></li>
-    <li class="level2 nav-leaf"><a href="../documentation/artwork.html">Artwork</a></li>
-    <li class="level2 nav-leaf"><a href="../documentation/terminal-materials.html">The Terminal Material</a></li>
-    <li class="level2 nav-leaf"><a href="../documentation/terminal-emulators.html">Terminal Emulators</a></li>
-    <li class="level2 nav-leaf"><a href="../documentation/terminal-ui.html">Terminal UI</a></li>
-    <li class="level1 active nav-node"><a href="#">Examples</a></li>
-    <li class="level2 nav-node"><a href="fragment/">Fragment</a></li>
-    <li class="level3 nav-node"><a href="fragment/basics/">Basics</a></li>
-    <li class="level4 nav-leaf"><a href="fragment/basics/minimal/">Minimal Fragment Shader Setup</a></li>
+    <li class="level1 nav-node"><a href="index.html">Roguelike Starter-kit</a></li>
+    <li class="level2 nav-leaf"><a href="roguelikes-and-indigo.html">Roguelikes &amp; Indigo</a></li>
+    <li class="level2 nav-leaf"><a href="artwork.html">Artwork</a></li>
+    <li class="level2 nav-leaf"><a href="terminal-materials.html">The Terminal Material</a></li>
+    <li class="level2 nav-leaf"><a href="terminal-emulators.html">Terminal Emulators</a></li>
+    <li class="level2 active nav-leaf"><a href="#">Terminal UI</a></li>
+    <li class="level1 nav-node"><a href="../examples/">Examples</a></li>
+    <li class="level2 nav-node"><a href="../examples/fragment/">Fragment</a></li>
+    <li class="level3 nav-node"><a href="../examples/fragment/basics/">Basics</a></li>
+    <li class="level4 nav-leaf"><a href="../examples/fragment/basics/minimal/">Minimal Fragment Shader Setup</a></li>
   </ul>
 
 </nav>
@@ -86,9 +86,11 @@
 
       
 <nav id="page-nav">
-  <p class="header"><a href="#">Examples</a></p>
+  <p class="header"><a href="#">Terminal UI</a></p>
 
   <ul class="nav-list">
+    <li class="level1 nav-node"><a href="#getting-started">Getting started</a></li>
+    <li class="level2 nav-leaf"><a href="#rendering-graphics">Rendering / Graphics</a></li>
   </ul>
 
   <p class="footer"></p>
@@ -97,10 +99,16 @@
 
       <main class="content">
 
-        <h1 id="examples" class="title">Examples</h1>
-        <ul>
-          <li><a href="fragment/">fragment</a></li>
-        </ul>
+        <h1 id="terminal-ui" class="title">Terminal UI</h1>
+        <p><img src="../img/color-palette.png" alt=""A colour palette made with the Terminal UI""></p>
+        
+        <h3 id="getting-started" class="section"><a class="anchor-link left" href="#getting-started"><i class="icofont-laika link">&#xef71;</i></a>Getting started</h3>
+        <p>The Roguelike Starterkit includes a UI system specifically for roguelikes / Terminal graphics. It is build directly on top of Indigo&#39;s UI system, but snaps everything to a terminal grid.</p>
+        <p>Please refer to the examples for usage.</p>
+        
+        <h4 id="rendering-graphics" class="section"><a class="anchor-link left" href="#rendering-graphics"><i class="icofont-laika link">&#xef71;</i></a>Rendering / Graphics</h4>
+        <p>Being part of the RLSK, under the covers, the Terminal UI is rendered using terminal emulators and character sheets.</p>
+        <p>To change the graphics of your UI, all you have to do is replace the appropriate characters on a sprite sheet, and feed it to the game / UI system.</p>
 
         
 <hr class="footer-rule"/>
