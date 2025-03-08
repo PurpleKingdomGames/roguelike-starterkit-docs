@@ -1,8 +1,6 @@
-# Ultraviolet Docs
+# Roguelike Starter-kit Docs
 
-This repository is meant to act as 'living documentation' for Ultraviolet, a Scala 3 to GLSL transpiler. Small, simple, reference examples of how to use Ultraviolet, and perhaps a few larger demos too.
-
-No example is too small, no library feature unworthy of a demo. If you think something is missing, please feel free to contribute.
+This repository is meant to act as 'living documentation' for the Roguelike Starter-kit, an [Indigo](https://indigoengine.io/) extension that provides terminal-style rendering and tools for making traditional Roguelike's in Indigo.
 
 ## Building the examples and documentation
 

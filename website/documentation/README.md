@@ -1,29 +1,29 @@
-# Ultraviolet
+# Roguelike Starter-kit
 
-[Ultraviolet](https://github.com/PurpleKingdomGames/ultraviolet) is a Scala 3 to GLSL 100/300 'inline' transpiler library.
+![Roguelike ascii art in Indigo](/img/roguelike.gif "Roguelike ascii art in Indigo")
 
-You can use Ultraviolet to generate GLSL shader code for any WebGL use case, such as with [ShaderToy](https://www.shadertoy.com/), but is primarily designed to support [Indigo](https://github.com/PurpleKingdomGames/indigo).
+The [Roguelike Starter-kit](https://github.com/PurpleKingdomGames/roguelike-starterkit) is a library for use with [Indigo](https://indigoengine.io/) to provide terminal-like rendering functionality specifically for ASCII art style games, and roguelike games in particular.
 
-All the shader examples and demos in these docs are written in [Ultraviolet](https://github.com/PurpleKingdomGames/ultraviolet) and presented using [Indigo](https://indigoengine.io/).
+All the examples and demos in these docs are presented using [Indigo](https://indigoengine.io/).
 
 ## Installation
 
-Check the repo for the [latest release number](https://github.com/PurpleKingdomGames/ultraviolet/releases), and substitute the `x.y.z` below accordingly.
+Check the repo for the [latest release number](https://github.com/PurpleKingdomGames/roguelike-starterkit/releases), and substitute the `x.y.z` below accordingly.
 
 sbt
 
 ```
-libraryDependencies += "io.indigoengine" %%% "ultraviolet" % "x.y.z"
+libraryDependencies += "io.indigoengine" %%% "roguelike-starterkit" % "x.y.z"
 ```
 
 Mill
 
 ```
-def ivyDeps = Agg(ivy"io.indigoengine::ultraviolet::x.y.z")
+def ivyDeps = Agg(ivy"io.indigoengine::roguelike-starterkit::x.y.z")
 ```
 
 Scala-CLI
 
 ```
-//> using dep io.indigoengine::ultraviolet:x.y.z
+//> using dep io.indigoengine::roguelike-starterkit:x.y.z
 ```
