@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Typelevel Laika + Helium Theme" />
+  <title>Motivation</title>
+  
+  
+  <meta name="description" content="An Indigo extension for rendering terminal-style games and roguelikes in particular."/>
+  
+  
+  
+  <link rel="icon" sizes="32x32" type="image/png" href="../img/favicon.png"/>
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700">
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono:500">
+  
+  <link rel="stylesheet" type="text/css" href="../helium/site/icofont.min.css" />
+    <link rel="stylesheet" type="text/css" href="../helium/site/laika-helium.css" />
+    <link rel="stylesheet" type="text/css" href="../css/custom.css" />
+  <script src="../helium/site/laika-helium.js"></script>
+  
+  
+  <script> /* for avoiding page load transitions */ </script>
+</head>
+
+  <body>
+
+    <header id="top-bar" class="light-default dark-default">
+
+  <div class="row">
+    <a id="nav-icon">
+      <i class="icofont-laika navigationMenu" title="Navigation">&#xefa2;</i>
+    </a>
+    
+    
+  </div>
+
+  <a class="icon-link glyph-link" href="index.html"><i class="icofont-laika home" title="Home">&#xef47;</i></a>
+
+  <div class="row links">
+    
+    <a class="button-link" href="https://purplekingdomgames.github.io/roguelike-starterkit-docs/demos">Live Demos</a>
+    
+    <a class="button-link" href="https://discord.gg/b5CD47g">Discord</a>
+    
+    <a class="button-link" href="https://github.com/PurpleKingdomGames/roguelike-starterkit">Github</a>
+    
+  </div>  
+
+</header>
+    
+    <nav id="sidebar">
+
+  <div class="row">
+    
+    <a class="button-link" href="https://purplekingdomgames.github.io/roguelike-starterkit-docs/demos">Live Demos</a>
+    
+    <a class="button-link" href="https://discord.gg/b5CD47g">Discord</a>
+    
+    <a class="button-link" href="https://github.com/PurpleKingdomGames/roguelike-starterkit">Github</a>
+    
+  </div>
+
+  <ul class="nav-list">
+    <li class="level1 nav-node"><a href="index.html">Ultraviolet</a></li>
+    <li class="level2 nav-leaf"><a href="shaders-and-glsl.html">Shaders and GLSL</a></li>
+    <li class="level2 active nav-leaf"><a href="#">Motivation</a></li>
+    <li class="level2 nav-node"><a href="guide/">Writing Shaders</a></li>
+    <li class="level3 nav-leaf"><a href="guide/scala-vs-glsl.html">Scala 3 vs GLSL</a></li>
+    <li class="level3 nav-leaf"><a href="guide/gotchas.html">Gotcha&#39;s, foot guns, and weird stuff</a></li>
+    <li class="level1 nav-node"><a href="../examples/">Examples</a></li>
+    <li class="level2 nav-node"><a href="../examples/fragment/">Fragment</a></li>
+    <li class="level3 nav-node"><a href="../examples/fragment/basics/">Basics</a></li>
+    <li class="level4 nav-leaf"><a href="../examples/fragment/basics/minimal/">Minimal Fragment Shader Setup</a></li>
+  </ul>
+
+</nav>
+
+    <div id="container">
+
+      
+<nav id="page-nav">
+  <p class="header"><a href="#">Motivation</a></p>
+
+  <ul class="nav-list">
+    <li class="level1 nav-leaf"><a href="#goals">Goals</a></li>
+    <li class="level1 nav-leaf"><a href="#non-goals">Non-goals</a></li>
+  </ul>
+
+  <p class="footer"></p>
+</nav>
+
+
+      <main class="content">
+
+        <h1 id="motivation" class="title">Motivation</h1>
+        <p>Writing shaders is a fun thing to do, and the primary aim of this project is to bring that programming joy to Scala.</p>
+        <p>Having said that, the project is also motivated by two real world needs:</p>
+        <ol class="arabic">
+          <li>We&#39;d like a shader writing solution with great tooling, and a seamless integration with Scala based games and graphics projects.</li>
+          <li>Indigo specifically is currently locked into WebGL 2.0, and any future move to other platforms or rendering technologies predicated on being about to abstract away from that.</li>
+        </ol>
+        
+        <h2 id="goals" class="section"><a class="anchor-link left" href="#goals"><i class="icofont-laika link">&#xef71;</i></a>Goals</h2>
+        <p>The library may ultimately diverge from GLSL, and who knows what sort of problems have been caused by using GLSL as a starting point, but replacing GLSL with Scala GLSL-flavored-shader-experience is the current goal.</p>
+        <ol class="arabic">
+          <li>An almost like-for-like experience of writing GLSL (for WebGL) in Scala 3, in all its highly specific, procedural glory.</li>
+          <li>A few quality of life improvements over standard GLSL, that Scala developers take for granted, such as:</li>
+        </ol>
+        <ol class="arabic">
+          <li>Code re-use and sharing</li>
+        </ol>
+        <ol class="arabic">
+          <li>Anonymous functions</li>
+        </ol>
+        <ol class="arabic">
+          <li>Simple function composition</li>
+        </ol>
+        <ol class="arabic">
+          <li>Ability to write unit tests</li>
+        </ol>
+        <ol class="arabic">
+          <li>If statements that return</li>
+          <li>Seamless inline integration into Scala projects.</li>
+        </ol>
+        
+        <h2 id="non-goals" class="section"><a class="anchor-link left" href="#non-goals"><i class="icofont-laika link">&#xef71;</i></a>Non-goals</h2>
+        <p>It is <em>not</em> a goal to be able to write arbitrary Scala and have it turned into GLSL. In other words, this isn&#39;t a &#39;full&#39; transpiler (like Scala.js), it is a useful cross-over subset of Scala and GLSL. As many GLSL language features as can sensibly be represented, and as much Scala as GLSL can be coerced into expressing.</p>
+        <p>For now at least, there will be no monads or typeclasses or other functional abstractions.</p>
+
+        
+<hr class="footer-rule"/>
+<footer>
+  Site generated by <a href="https://typelevel.org/Laika/">Laika</a> with the Helium theme.
+</footer>
+
+
+      </main>
+
+    </div>
+
+  </body>
+
+</html>

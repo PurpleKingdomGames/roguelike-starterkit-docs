@@ -1,0 +1,28 @@
+# Roguelike starterkit purpledoc config
+kind: indigo
+inputs:
+  staticSite: website
+outputs:
+  destination: docs
+website:
+  title: Roguelike Starter-kit
+  description: An Indigo extension for rendering terminal-style games and roguelikes in particular.
+  # topNavLogo:
+  #   image: tyrian-horizontal.svg
+  #   width: 150.0
+  #   height: 50.0
+  # logo:
+  #   image: tyrian-menu-logo.svg
+  latestRelease: 0.7.0
+  baseUrl: https://purplekingdomgames.github.io/roguelike-starterkit-docs/
+docsRepo:
+  name: Docs
+  url: https://github.com/PurpleKingdomGames/roguelike-starterkit-docs
+  editBaseUrl: https://github.com/PurpleKingdomGames/roguelike-starterkit-docs/blob/main
+repo:
+  name: Github
+  url: https://github.com/PurpleKingdomGames/roguelike-starterkit
+  editBaseUrl: https://github.com/PurpleKingdomGames/roguelike-starterkit/blob/main
+discord:
+  name: Discord
+  url: https://discord.gg/b5CD47g
