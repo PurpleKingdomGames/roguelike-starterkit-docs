@@ -3,7 +3,9 @@ package indigoexamples
 import indigo.*
 import indigoextras.ui.*
 import indigoextras.ui.syntax.*
-
+import roguelikestarterkit.*
+import roguelikestarterkit.syntax.*
+import roguelikestarterkit.ui.*
 import generated.Config
 import generated.Assets
 
@@ -11,35 +13,25 @@ import scala.scalajs.js.annotation.*
 
 object CustomComponents:
 
-  val component: Switch[Unit] =
-    Switch[Unit](Bounds(40, 40))(
-      (ctx, switch) =>
-        Outcome(
-          Layer(
-            Shape
-              .Box(
-                switch.bounds.unsafeToRectangle,
-                Fill.Color(RGBA.Green.mix(RGBA.Black)),
-                Stroke(1, RGBA.Green)
-              )
-              .moveTo(ctx.parent.coords.unsafeToPoint)
-          )
-        ),
-      (ctx, switch) =>
-        Outcome(
-          Layer(
-            Shape
-              .Box(
-                switch.bounds.unsafeToRectangle,
-                Fill.Color(RGBA.Red.mix(RGBA.Black)),
-                Stroke(1, RGBA.Red)
-              )
-              .moveTo(ctx.parent.coords.unsafeToPoint)
-          )
-        )
+  val charSheet: CharSheet =
+    CharSheet(
+      Assets.assets.AnikkiSquare10x10,
+      Size(10),
+      RoguelikeTiles.Size10x10.charCrops,
+      RoguelikeTiles.Size10x10.Fonts.fontKey
     )
-      .onSwitch((ctx, switch) => Batch(Log("Switched to: " + switch.state)))
-      .switchOn
+
+  val component: Switch[Unit] =
+    TerminalSwitch[Unit](
+      TerminalSwitch.Theme(
+        charSheet,
+        TerminalTile(Tile.`0`, RGBA.Green, RGBA.Black),
+        TerminalTile(Tile.X, RGBA.Red, RGBA.Black)
+      )
+    ).switchOn // On by default
+      .onSwitch((_, switch) =>
+        Batch(Log(s"Switch is now ${if switch.state.isOn then "on" else "off"}"))
+      )
 
 final case class Log(message: String) extends GlobalEvent
 
@@ -56,13 +48,14 @@ object SwitchExample extends IndigoSandbox[Unit, Model]:
 
   val config: GameConfig =
     Config.config.noResize
+      .withMagnification(2)
 
   val assets: Set[AssetType] =
     Assets.assets.assetSet
 
   val fonts: Set[FontInfo]        = Set()
   val animations: Set[Animation]  = Set()
-  val shaders: Set[ShaderProgram] = Set()
+  val shaders: Set[ShaderProgram] = roguelikestarterkit.shaders.all
 
   def setup(assetCollection: AssetCollection, dice: Dice): Outcome[Startup[Unit]] =
     Outcome(Startup.Success(()))
@@ -76,14 +69,26 @@ object SwitchExample extends IndigoSandbox[Unit, Model]:
       Outcome(model)
 
     case e =>
-      val ctx = UIContext(context).moveParentBy(Coords(50, 50))
+      val ctx = UIContext(context)
+        .withSnapGrid(CustomComponents.charSheet.size)
+        .moveParentBy(Coords(5, 5))
+        .withPointerCoords(
+          Coords(context.frame.input.pointers.position / CustomComponents.charSheet.size.toPoint)
+        )
+        .withMagnification(2)
 
       model.button.update(ctx)(e).map { b =>
         model.copy(button = b)
       }
 
   def present(context: Context[Unit], model: Model): Outcome[SceneUpdateFragment] =
-    val ctx = UIContext(context).moveParentBy(Coords(50, 50))
+    val ctx = UIContext(context)
+      .withSnapGrid(CustomComponents.charSheet.size)
+      .moveParentBy(Coords(5, 5))
+      .withPointerCoords(
+        Coords(context.frame.input.pointers.position / CustomComponents.charSheet.size.toPoint)
+      )
+      .withMagnification(2)
 
     model.button
       .present(ctx)
