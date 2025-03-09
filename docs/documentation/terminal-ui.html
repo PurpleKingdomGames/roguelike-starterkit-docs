@@ -70,14 +70,25 @@
   <ul class="nav-list">
     <li class="level1 nav-node"><a href="index.html">Roguelike Starter-kit</a></li>
     <li class="level2 nav-leaf"><a href="roguelikes-and-indigo.html">Roguelikes &amp; Indigo</a></li>
-    <li class="level2 nav-leaf"><a href="artwork.html">Artwork</a></li>
+    <li class="level2 nav-leaf"><a href="artwork.html">Character Sheets</a></li>
     <li class="level2 nav-leaf"><a href="terminal-materials.html">The Terminal Material</a></li>
     <li class="level2 nav-leaf"><a href="terminal-emulators.html">Terminal Emulators</a></li>
     <li class="level2 active nav-leaf"><a href="#">Terminal UI</a></li>
     <li class="level1 nav-node"><a href="../examples/">Examples</a></li>
-    <li class="level2 nav-node"><a href="../examples/fragment/">Fragment</a></li>
-    <li class="level3 nav-node"><a href="../examples/fragment/basics/">Basics</a></li>
-    <li class="level4 nav-leaf"><a href="../examples/fragment/basics/minimal/">Minimal Fragment Shader Setup</a></li>
+    <li class="level2 nav-node"><a href="../examples/emulators/">Emulators</a></li>
+    <li class="level3 nav-leaf"><a href="../examples/emulators/rogue-terminal-emulator/">Rogue Terminal Emulator</a></li>
+    <li class="level3 nav-leaf"><a href="../examples/emulators/terminal-emulator/">Terminal Emulator</a></li>
+    <li class="level2 nav-node"><a href="../examples/materials/">Materials</a></li>
+    <li class="level3 nav-leaf"><a href="../examples/materials/terminal-material/">Terminal Material Example</a></li>
+    <li class="level3 nav-leaf"><a href="../examples/materials/terminal-text/">Terminal Text Example</a></li>
+    <li class="level2 nav-node"><a href="../examples/terminal-ui/">Terminal-ui</a></li>
+    <li class="level3 nav-leaf"><a href="../examples/terminal-ui/button/">UI Components: Button</a></li>
+    <li class="level3 nav-leaf"><a href="../examples/terminal-ui/input/">UI Components: Input</a></li>
+    <li class="level3 nav-leaf"><a href="../examples/terminal-ui/label/">UI Components: Label</a></li>
+    <li class="level3 nav-leaf"><a href="../examples/terminal-ui/scrollpane/">UI Components: Scroll Pane</a></li>
+    <li class="level3 nav-leaf"><a href="../examples/terminal-ui/switch/">UI Components: Switch</a></li>
+    <li class="level3 nav-leaf"><a href="../examples/terminal-ui/textarea/">UI Components: TextArea</a></li>
+    <li class="level3 nav-leaf"><a href="../examples/terminal-ui/window/">UI Components: Windows</a></li>
   </ul>
 
 </nav>
@@ -89,7 +100,8 @@
   <p class="header"><a href="#">Terminal UI</a></p>
 
   <ul class="nav-list">
-    <li class="level1 nav-node"><a href="#getting-started">Getting started</a></li>
+    <li class="level1 nav-leaf"><a href="#scale-and-the-terminal-grid">Scale and the terminal grid</a></li>
+    <li class="level1 nav-node"><a href="#comments-on-the-design">Comments on the design</a></li>
     <li class="level2 nav-leaf"><a href="#rendering-graphics">Rendering / Graphics</a></li>
   </ul>
 
@@ -101,13 +113,22 @@
 
         <h1 id="terminal-ui" class="title">Terminal UI</h1>
         <p><img src="../img/color-palette.png" alt=""A colour palette made with the Terminal UI""></p>
-        
-        <h3 id="getting-started" class="section"><a class="anchor-link left" href="#getting-started"><i class="icofont-laika link">&#xef71;</i></a>Getting started</h3>
         <p>The Roguelike Starterkit includes a UI system specifically for roguelikes / Terminal graphics. It is build directly on top of Indigo&#39;s UI system, but snaps everything to a terminal grid.</p>
         <p>Please refer to the examples for usage.</p>
         
-        <h4 id="rendering-graphics" class="section"><a class="anchor-link left" href="#rendering-graphics"><i class="icofont-laika link">&#xef71;</i></a>Rendering / Graphics</h4>
-        <p>Being part of the RLSK, under the covers, the Terminal UI is rendered using terminal emulators and character sheets.</p>
+        <h2 id="scale-and-the-terminal-grid" class="section"><a class="anchor-link left" href="#scale-and-the-terminal-grid"><i class="icofont-laika link">&#xef71;</i></a>Scale and the terminal grid</h2>
+        <p>Indigo&#39;s UI system by default assumes you&#39;re building a UI at 1:1 scale - i.e. on a grid with a width and height of one pixel.</p>
+        <p>Because the Terminal UI is simulating an ASCII terminal, it works on a bigger grid that you decide, but that is theoretically the same size as the characters on your character sheet. In other words, everything is on a fixed grid and snaps to that grid.</p>
+        <p>This means that if you want something to appear 200 pixels across the screen, but you char sheet is a 10x10, then 200 pixels is actually grid square 20 (along the X axis).</p>
+        <p>The difference between pixel space and grid space is why the UI uses a different set of primitives, e.g. <code>Coords</code> instead of <code>Point</code>.</p>
+        <p>Mostly this is all taken care of for you, or there are facilities to help you, for example if you want to get a <code>Point</code> out of a <code>Coords</code> instance, you <em>can</em> do <code>Coords(10).unsafeToPoint</code>, but you <em>should</em> use <code>Coords(10).toScreenSpace(charSheet.size)</code>.</p>
+        
+        <h2 id="comments-on-the-design" class="section"><a class="anchor-link left" href="#comments-on-the-design"><i class="icofont-laika link">&#xef71;</i></a>Comments on the design</h2>
+        <p>Indigo&#39;s UI system is designed to generically provide the minimum number of building blocks needed to build more complex ui systems. For example, there is no radio button primitive because you can build radio buttons out of a component list, where each entry is a component group, of a switch and a label.</p>
+        <p>Following on from that trend, there is no value in providing &#39;terminal&#39; instances of all of Indigo UI&#39;s primitives, since not all of them are visually presented. For example, there is a <code>TerminalButton</code> because this is a visual element, but there is no &#39;terminal component group&#39; because it&#39;s a layout tool, and has no visual aspect to it.</p>
+        
+        <h3 id="rendering-graphics" class="section"><a class="anchor-link left" href="#rendering-graphics"><i class="icofont-laika link">&#xef71;</i></a>Rendering / Graphics</h3>
+        <p>Being part of the Roguelike Starterkit, under the covers the Terminal UI is rendered using terminal emulators and character sheets.</p>
         <p>To change the graphics of your UI, all you have to do is replace the appropriate characters on a sprite sheet, and feed it to the game / UI system.</p>
 
         
