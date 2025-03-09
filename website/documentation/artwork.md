@@ -1,6 +1,8 @@
-# Artwork
+# Character Sheets
 
 ![The Zilk 16x16 tile sheet from the dwarf fortress repository](/img/Zilk_16x16.png "The Zilk 16x16 tile sheet from the dwarf fortress repository")
+
+All of the graphics in the roguelike starterkit are based on 'character sheets' (the `CharSheet` type), which are all based on the extended ASCII format laid out in a 16x16 grid.
 
 ## Finding artwork
 
