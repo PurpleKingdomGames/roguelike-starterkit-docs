@@ -28,7 +28,7 @@ object CustomComponents:
         TerminalTile(Tile.`0`, RGBA.Green, RGBA.Black),
         TerminalTile(Tile.X, RGBA.Red, RGBA.Black)
       )
-    ).switchOn // On by default
+    ).switchOn
       .onSwitch((_, switch) =>
         Batch(Log(s"Switch is now ${if switch.state.isOn then "on" else "off"}"))
       )
