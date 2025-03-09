@@ -45,44 +45,14 @@ object examples extends mill.Module {
         makeIndigoOptions("UI Components - Button")
     }
 
-    object `component-group` extends rlskmodule.RLSKModule {
-      val indigoOptions: IndigoOptions =
-        makeIndigoOptions("UI Components - ComponentGroup")
-    }
-
-    object `component-list` extends rlskmodule.RLSKModule {
-      val indigoOptions: IndigoOptions =
-        makeIndigoOptions("UI Components - ComponentList")
-    }
-
-    object custom extends rlskmodule.RLSKModule {
-      val indigoOptions: IndigoOptions =
-        makeIndigoOptions("UI Components - Custom Components")
-    }
-
     object label extends rlskmodule.RLSKModule {
       val indigoOptions: IndigoOptions =
         makeIndigoOptions("UI Components - Label")
     }
 
-    object hitarea extends rlskmodule.RLSKModule {
-      val indigoOptions: IndigoOptions =
-        makeIndigoOptions("UI Components - HitArea")
-    }
-
     object input extends rlskmodule.RLSKModule {
       val indigoOptions: IndigoOptions =
         makeIndigoOptions("UI Components - Input")
-    }
-
-    object maskedpane extends rlskmodule.RLSKModule {
-      val indigoOptions: IndigoOptions =
-        makeIndigoOptions("UI Components - MaskedPane")
-    }
-
-    object radiobuttons extends rlskmodule.RLSKModule {
-      val indigoOptions: IndigoOptions =
-        makeIndigoOptions("UI Components - Radio buttons")
     }
 
     object scrollpane extends rlskmodule.RLSKModule {
