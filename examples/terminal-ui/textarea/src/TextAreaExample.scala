@@ -3,59 +3,48 @@ package indigoexamples
 import indigo.*
 import indigoextras.ui.*
 import indigoextras.ui.syntax.*
-
+import roguelikestarterkit.*
+import roguelikestarterkit.syntax.*
+import roguelikestarterkit.ui.*
 import generated.*
 
 import scala.scalajs.js.annotation.*
 
 object CustomComponents:
 
-  val text =
-    Text(
-      "",
-      DefaultFont.fontKey,
-      Assets.assets.generated.DefaultFontMaterial
+  val charSheet: CharSheet =
+    CharSheet(
+      Assets.assets.AnikkiSquare10x10,
+      Size(10),
+      RoguelikeTiles.Size10x10.charCrops,
+      RoguelikeTiles.Size10x10.Fonts.fontKey
     )
 
-  val component: TextArea[Unit] =
-    TextArea[Unit](
-      "This is just,\nsome text.",
-      (ctx, txt) => Bounds(ctx.services.bounds.get(text.withText(txt)))
-    ) { (ctx, textArea) =>
-      Outcome(
-        Layer(
-          text
-            .withText(textArea.text(ctx))
-            .moveTo(ctx.parent.coords.unsafeToPoint),
-          Shape
-            .Box(
-              textArea.bounds(ctx).unsafeToRectangle,
-              Fill.None,
-              Stroke(1, RGBA.Green)
-            )
-            .moveTo(ctx.parent.coords.unsafeToPoint)
-        )
-      )
-    }
+  val component: TextArea[Int] =
+    TerminalTextArea[Int](
+      ctx => "abc.\nde,f\n0123456! " + ctx.reference,
+      TerminalTextArea.Theme(charSheet)
+    )
 
-final case class Model(component: TextArea[Unit])
+final case class Model(count: Int, component: TextArea[Int])
 object Model:
 
   val initial: Model =
-    Model(CustomComponents.component)
+    Model(42, CustomComponents.component)
 
 @JSExportTopLevel("IndigoGame")
 object TextAreaExample extends IndigoSandbox[Unit, Model]:
 
   val config: GameConfig =
     Config.config.noResize
+      .withMagnification(2)
 
   val assets: Set[AssetType] =
-    Assets.assets.assetSet ++ Assets.assets.generated.assetSet
+    Assets.assets.assetSet
 
-  val fonts: Set[FontInfo]        = Set(DefaultFont.fontInfo)
+  val fonts: Set[FontInfo]        = Set()
   val animations: Set[Animation]  = Set()
-  val shaders: Set[ShaderProgram] = Set()
+  val shaders: Set[ShaderProgram] = roguelikestarterkit.shaders.all
 
   def setup(assetCollection: AssetCollection, dice: Dice): Outcome[Startup[Unit]] =
     Outcome(Startup.Success(()))
@@ -66,7 +55,13 @@ object TextAreaExample extends IndigoSandbox[Unit, Model]:
   def updateModel(context: Context[Unit], model: Model): GlobalEvent => Outcome[Model] =
     case e =>
       val ctx = UIContext(context)
-        .moveParentBy(Coords(50, 50))
+        .withSnapGrid(CustomComponents.charSheet.size)
+        .moveParentBy(Coords(5, 5))
+        .withPointerCoords(
+          Coords(context.frame.input.pointers.position / CustomComponents.charSheet.size.toPoint)
+        )
+        .withMagnification(2)
+        .copy(reference = model.count)
 
       model.component.update(ctx)(e).map { c =>
         model.copy(component = c)
@@ -74,7 +69,13 @@ object TextAreaExample extends IndigoSandbox[Unit, Model]:
 
   def present(context: Context[Unit], model: Model): Outcome[SceneUpdateFragment] =
     val ctx = UIContext(context)
-      .moveParentBy(Coords(50, 50))
+      .withSnapGrid(CustomComponents.charSheet.size)
+      .moveParentBy(Coords(5, 5))
+      .withPointerCoords(
+        Coords(context.frame.input.pointers.position / CustomComponents.charSheet.size.toPoint)
+      )
+      .withMagnification(2)
+      .copy(reference = model.count)
 
     model.component
       .present(ctx)
