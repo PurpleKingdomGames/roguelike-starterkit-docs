@@ -4,7 +4,6 @@ import indigo.*
 import indigoextras.ui.*
 import indigoextras.ui.syntax.*
 import roguelikestarterkit.*
-import roguelikestarterkit.syntax.*
 import roguelikestarterkit.ui.*
 import generated.Config
 import generated.Assets
@@ -69,26 +68,18 @@ object SwitchExample extends IndigoSandbox[Unit, Model]:
       Outcome(model)
 
     case e =>
-      val ctx = UIContext(context)
+      val ctx = UIContext(context, context.frame.globalMagnification)
         .withSnapGrid(CustomComponents.charSheet.size)
         .moveParentBy(Coords(5, 5))
-        .withPointerCoords(
-          Coords(context.frame.input.pointers.position / CustomComponents.charSheet.size.toPoint)
-        )
-        .withMagnification(2)
 
       model.button.update(ctx)(e).map { b =>
         model.copy(button = b)
       }
 
   def present(context: Context[Unit], model: Model): Outcome[SceneUpdateFragment] =
-    val ctx = UIContext(context)
+    val ctx = UIContext(context, context.frame.globalMagnification)
       .withSnapGrid(CustomComponents.charSheet.size)
       .moveParentBy(Coords(5, 5))
-      .withPointerCoords(
-        Coords(context.frame.input.pointers.position / CustomComponents.charSheet.size.toPoint)
-      )
-      .withMagnification(2)
 
     model.button
       .present(ctx)

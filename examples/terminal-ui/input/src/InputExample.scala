@@ -4,7 +4,6 @@ import indigo.*
 import indigoextras.ui.*
 import indigoextras.ui.syntax.*
 import roguelikestarterkit.*
-import roguelikestarterkit.syntax.*
 import roguelikestarterkit.ui.*
 import generated.*
 
@@ -59,26 +58,18 @@ object InputExample extends IndigoSandbox[Unit, Model]:
       Outcome(model)
 
     case e =>
-      val ctx = UIContext(context)
+      val ctx = UIContext(context, context.frame.globalMagnification)
         .withSnapGrid(CustomComponents.charSheet.size)
         .moveParentBy(Coords(5, 5))
-        .withPointerCoords(
-          Coords(context.frame.input.pointers.position / CustomComponents.charSheet.size.toPoint)
-        )
-        .withMagnification(2)
 
       model.component.update(ctx)(e).map { c =>
         model.copy(component = c)
       }
 
   def present(context: Context[Unit], model: Model): Outcome[SceneUpdateFragment] =
-    val ctx = UIContext(context)
+    val ctx = UIContext(context, context.frame.globalMagnification)
       .withSnapGrid(CustomComponents.charSheet.size)
       .moveParentBy(Coords(5, 5))
-      .withPointerCoords(
-        Coords(context.frame.input.pointers.position / CustomComponents.charSheet.size.toPoint)
-      )
-      .withMagnification(2)
 
     model.component
       .present(ctx)

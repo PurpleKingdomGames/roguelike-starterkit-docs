@@ -5,7 +5,6 @@ import indigo.*
 import indigoextras.ui.*
 import indigoextras.ui.syntax.*
 import roguelikestarterkit.*
-import roguelikestarterkit.syntax.*
 import roguelikestarterkit.ui.*
 import generated.*
 
@@ -58,13 +57,9 @@ object LabelExample extends IndigoSandbox[Unit, Model]:
 
   def updateModel(context: Context[Unit], model: Model): GlobalEvent => Outcome[Model] =
     case e =>
-      val ctx = UIContext(context)
+      val ctx = UIContext(context, context.frame.globalMagnification)
         .withSnapGrid(CustomComponents.charSheet.size)
         .moveParentBy(Coords(5, 5))
-        .withPointerCoords(
-          Coords(context.frame.input.pointers.position / CustomComponents.charSheet.size.toPoint)
-        )
-        .withMagnification(2)
         .copy(reference = model.count)
 
       model.label.update(ctx)(e).map { l =>
@@ -72,13 +67,9 @@ object LabelExample extends IndigoSandbox[Unit, Model]:
       }
 
   def present(context: Context[Unit], model: Model): Outcome[SceneUpdateFragment] =
-    val ctx = UIContext(context)
+    val ctx = UIContext(context, context.frame.globalMagnification)
       .withSnapGrid(CustomComponents.charSheet.size)
       .moveParentBy(Coords(5, 5))
-      .withPointerCoords(
-        Coords(context.frame.input.pointers.position / CustomComponents.charSheet.size.toPoint)
-      )
-      .withMagnification(2)
       .copy(reference = model.count)
 
     model.label
