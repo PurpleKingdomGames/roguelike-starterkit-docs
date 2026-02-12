@@ -15,6 +15,9 @@ website:
   #   image: tyrian-menu-logo.svg
   latestRelease: 0.8.0
   baseUrl: https://purplekingdomgames.github.io/roguelike-starterkit-docs/
+  navigationOrder:
+    - documentation
+    - examples
 docsRepo:
   name: Docs
   url: https://github.com/PurpleKingdomGames/roguelike-starterkit-docs
