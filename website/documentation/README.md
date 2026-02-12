@@ -2,13 +2,13 @@
 
 ![Roguelike ascii art in Indigo](/img/roguelike.gif "Roguelike ascii art in Indigo")
 
-The [Roguelike Starter-kit](https://github.com/PurpleKingdomGames/roguelike-starterkit) is a library for use with [Indigo](https://indigoengine.io/) to provide terminal-like rendering functionality specifically for ASCII art style games, and roguelike games in particular.
+The [Roguelike Starter-kit](https://github.com/PurpleKingdomGames/indigoengine) is a library for use with [Indigo](https://indigoengine.io/) to provide terminal-like rendering functionality specifically for ASCII art style games, and roguelike games in particular.
 
 All the examples and demos in these docs are presented using [Indigo](https://indigoengine.io/).
 
 ## Installation
 
-Check the repo for the [latest release number](https://github.com/PurpleKingdomGames/roguelike-starterkit/releases), and substitute the `x.y.z` below accordingly.
+Check the repo for the [latest release number](https://github.com/PurpleKingdomGames/indigoengine/releases), and substitute the `x.y.z` below accordingly.
 
 sbt
 
