@@ -19,7 +19,7 @@ libraryDependencies += "io.indigoengine" %%% "roguelike-starterkit" % "x.y.z"
 Mill
 
 ```
-def ivyDeps = Agg(ivy"io.indigoengine::roguelike-starterkit::x.y.z")
+def mvnDeps = Seq(mvn"io.indigoengine::roguelike-starterkit::x.y.z")
 ```
 
 Scala-CLI

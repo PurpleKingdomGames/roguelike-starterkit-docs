@@ -14,8 +14,6 @@ import generated.Config
 import generated.Assets
 import roguelikestarterkit.*
 
-import scala.scalajs.js.annotation.*
-
 final case class Model(terminal: TerminalEmulator, cachedTiles: Option[TerminalClones])
 object Model:
   val initial: Model =
@@ -35,27 +33,33 @@ object Model:
 
     Model(terminal, None)
 
-@JSExportTopLevel("IndigoGame")
-object TerminalEmulatorExample extends IndigoSandbox[Unit, Model]:
+class TerminalEmulatorExample() extends Game[Unit, Unit, Model]:
 
-  val config: GameConfig =
-    Config.config.noResize
-      .withMagnification(2)
+  val gameId: GameId = GameId("terminal-emulator")
 
-  val assets: Set[AssetType] =
-    Assets.assets.assetSet
+  val eventFilters: EventFilters = EventFilters.Permissive
 
-  val fonts: Set[FontInfo]        = Set()
-  val animations: Set[Animation]  = Set()
-  val shaders: Set[ShaderProgram] = roguelikestarterkit.shaders.all
+  def boot(flags: Map[String, String]): Outcome[BootResult[Unit, Model]] =
+    Outcome(
+      BootResult
+        .noData(Config.config)
+        .withAssets(Assets.assets.assetSetRelative)
+        .withShaders(roguelikestarterkit.shaders.all)
+    )
 
-  def setup(assetCollection: AssetCollection, dice: Dice): Outcome[Startup[Unit]] =
+  def scenes(bootData: Unit): NonEmptyBatch[Scene[Unit, Model]] =
+    NonEmptyBatch(Scene.empty)
+
+  def initialScene(bootData: Unit): Option[SceneName] =
+    None
+
+  def setup(bootData: Unit, assetCollection: AssetCollection, dice: Dice): Outcome[Startup[Unit]] =
     Outcome(Startup.Success(()))
 
   def initialModel(startupData: Unit): Outcome[Model] =
     Outcome(Model.initial)
 
-  def updateModel(context: Context[Unit], model: Model): GlobalEvent => Outcome[Model] =
+  def updateModel(context: Context, model: Model): GlobalEvent => Outcome[Model] =
     case FrameTick if model.cachedTiles.isEmpty =>
 
       val cachedTiles: TerminalClones =
@@ -72,7 +76,7 @@ object TerminalEmulatorExample extends IndigoSandbox[Unit, Model]:
     case _ =>
       Outcome(model)
 
-  def present(context: Context[Unit], model: Model): Outcome[SceneUpdateFragment] =
+  def present(context: Context, model: Model): Outcome[SceneUpdateFragment] =
     model.cachedTiles match
       case None =>
         Outcome(SceneUpdateFragment.empty)

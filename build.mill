@@ -1,0 +1,83 @@
+//| mvnDeps:
+//|   - "io.indigoengine:mill-indigo_mill1_3:0.30.0-M1-PREVIEW"
+//|   - "org.typelevel::scalac-options:0.1.11"
+
+package build
+
+import mill.*
+import mill.scalalib.*
+import mill.scalajslib.*
+import mill.scalajslib.api.*
+import mill.api.BuildCtx
+import mill.scalalib.scalafmt.*
+
+import indigoplugin.*
+import org.typelevel.scalacoptions.*
+
+trait RLSKModule extends MillIndigoJS with ScalafmtModule {
+  def scalaVersion   = "3.8.3"
+  def scalaJSVersion = "1.21.0"
+
+  override def scalacOptions = Task {
+    val baseOptions = ScalacOptions.tokensForVersion(
+      ScalaVersion.unsafeFromString(scalaVersion()),
+      ScalacOptions.default ++
+        ScalacOptions.fatalWarningOptions
+    )
+    
+    // "-Xfatal-warnings" removed because it's been replaced with "-Werror"
+    val excluded = Set(
+      "-Xfatal-warnings",
+      "-Wunused:all",
+      "-Wunused:locals",
+      "-Wunused:params",
+      "-Wunused:explicits",
+      "-Wnonunit-statement"
+    )
+    val filtered = baseOptions.filterNot(excluded.contains)
+
+    super.scalacOptions() ++ filtered ++ Seq("-Werror")
+  }
+
+  def indigoOptions(assetsDirectory: os.Path): IndigoOptions
+
+  def indigoAssets =
+    Task.Source(BuildCtx.workspaceRoot / "assets")
+
+  def makeIndigoOptions(title: String): IndigoOptions =
+    IndigoOptions.defaults
+      .withTitle(title)
+      .withWindowSize(550, 400)
+      .withBackgroundColor("black")
+      .excludeAssets {
+        case p if p.endsWith(os.RelPath.rel / ".gitkeep")  => true
+        case p if p.endsWith(os.RelPath.rel / ".DS_Store") => true
+        case _                                             => false
+      }
+
+  def indigoGenerators(assetsDirectory: os.Path): IndigoGenerators =
+    IndigoGenerators("generated")
+      .generateConfig("Config")
+      .listAssets("Assets")
+
+  val indigoVersion = "0.30.0-M1-PREVIEW"
+
+  def mvnDeps =
+    Seq(
+      mvn"io.indigoengine::roguelike-starterkit::$indigoVersion",
+      mvn"io.indigoengine::indigo-json-circe::$indigoVersion",
+      mvn"io.indigoengine::indigo::$indigoVersion",
+      mvn"io.indigoengine::indigo-extras::$indigoVersion"
+    )
+
+  object test extends ScalaJSTests {
+    def mvnDeps = Seq(
+      mvn"org.scalameta::munit::1.2.2"
+    )
+
+    override def moduleKind = Task(mill.scalajslib.api.ModuleKind.CommonJSModule)
+
+    def testFramework = Task("munit.Framework")
+  }
+
+}

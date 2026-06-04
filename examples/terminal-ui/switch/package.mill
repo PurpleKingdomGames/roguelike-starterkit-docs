@@ -1,0 +1,8 @@
+package build.examples.`terminal-ui`.switch
+
+import indigoplugin.*
+import build.RLSKModule
+
+object `package` extends RLSKModule:
+  def indigoOptions(assetsDirectory: os.Path): IndigoOptions =
+    makeIndigoOptions("UI Components - Switch")

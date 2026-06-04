@@ -7,40 +7,44 @@ import roguelikestarterkit.*
 import ultraviolet.syntax.*
 
 import scala.annotation.nowarn
-import scala.scalajs.js.annotation.*
 
 final case class Model()
 object Model:
   val initial: Model = Model()
 
-@JSExportTopLevel("IndigoGame")
-object TerminalMaterialExample extends IndigoSandbox[Unit, Model]:
+class TerminalMaterialExample() extends Game[Unit, Unit, Model]:
 
-  val config: GameConfig =
-    Config.config.noResize
-      .withMagnification(2)
+  val gameId: GameId = GameId("terminal-material")
 
-  val assets: Set[AssetType] =
-    Assets.assets.assetSet
+  val eventFilters: EventFilters = EventFilters.Permissive
 
-  val fonts: Set[FontInfo]       = Set(RoguelikeTiles.Size10x10.Fonts.fontInfo)
-  val animations: Set[Animation] = Set()
+  def boot(flags: Map[String, String]): Outcome[BootResult[Unit, Model]] =
+    Outcome(
+      BootResult
+        .noData(Config.config)
+        .withAssets(Assets.assets.assetSetRelative)
+        .withFonts(RoguelikeTiles.Size10x10.Fonts.fontInfo)
+        .withShaders(roguelikestarterkit.shaders.all ++ Set(CustomShader.shader))
+    )
 
-  val shaders: Set[ShaderProgram] =
-    roguelikestarterkit.shaders.all ++ Set(CustomShader.shader)
+  def scenes(bootData: Unit): NonEmptyBatch[Scene[Unit, Model]] =
+    NonEmptyBatch(Scene.empty)
 
-  def setup(assetCollection: AssetCollection, dice: Dice): Outcome[Startup[Unit]] =
+  def initialScene(bootData: Unit): Option[SceneName] =
+    None
+
+  def setup(bootData: Unit, assetCollection: AssetCollection, dice: Dice): Outcome[Startup[Unit]] =
     Outcome(Startup.Success(()))
 
   def initialModel(startupData: Unit): Outcome[Model] =
     Outcome(Model.initial)
 
-  def updateModel(context: Context[Unit], model: Model): GlobalEvent => Outcome[Model] =
+  def updateModel(context: Context, model: Model): GlobalEvent => Outcome[Model] =
     case _ =>
       Outcome(model)
 
   def present(
-      context: Context[Unit],
+      context: Context,
       model: Model
   ): Outcome[SceneUpdateFragment] =
 

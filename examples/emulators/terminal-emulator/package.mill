@@ -1,0 +1,8 @@
+package build.examples.emulators.`terminal-emulator`
+
+import indigoplugin.*
+import build.RLSKModule
+
+object `package` extends RLSKModule:
+  def indigoOptions(assetsDirectory: os.Path): IndigoOptions =
+    makeIndigoOptions("Terminal Emulator Example")
