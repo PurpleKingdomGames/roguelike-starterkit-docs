@@ -8,8 +8,6 @@ import roguelikestarterkit.*
 import roguelikestarterkit.ui.*
 import generated.*
 
-import scala.scalajs.js.annotation.*
-
 object CustomComponents:
 
   val charSheet: CharSheet =
@@ -35,29 +33,35 @@ object Model:
       CustomComponents.customLabel
     )
 
-@JSExportTopLevel("IndigoGame")
-object LabelExample extends IndigoSandbox[Unit, Model]:
+class LabelExample() extends Game[Unit, Unit, Model]:
 
-  val config: GameConfig =
-    Config.config.noResize
-      .withMagnification(2)
+  val gameId: GameId = GameId("label")
 
-  val assets: Set[AssetType] =
-    Assets.assets.assetSet
+  val eventFilters: EventFilters = EventFilters.Permissive
 
-  val fonts: Set[FontInfo]        = Set()
-  val animations: Set[Animation]  = Set()
-  val shaders: Set[ShaderProgram] = roguelikestarterkit.shaders.all
+  def boot(flags: Map[String, String]): Outcome[BootResult[Unit, Model]] =
+    Outcome(
+      BootResult
+        .noData(Config.config)
+        .withAssets(Assets.assets.assetSetRelative)
+        .withShaders(indigoextras.ui.shaders.all ++ roguelikestarterkit.shaders.all)
+    )
 
-  def setup(assetCollection: AssetCollection, dice: Dice): Outcome[Startup[Unit]] =
+  def scenes(bootData: Unit): NonEmptyBatch[Scene[Unit, Model]] =
+    NonEmptyBatch(Scene.empty)
+
+  def initialScene(bootData: Unit): Option[SceneName] =
+    None
+
+  def setup(bootData: Unit, assetCollection: AssetCollection, dice: Dice): Outcome[Startup[Unit]] =
     Outcome(Startup.Success(()))
 
   def initialModel(startupData: Unit): Outcome[Model] =
     Outcome(Model.initial)
 
-  def updateModel(context: Context[Unit], model: Model): GlobalEvent => Outcome[Model] =
+  def updateModel(context: Context, model: Model): GlobalEvent => Outcome[Model] =
     case e =>
-      val ctx = UIContext(context, context.frame.globalMagnification)
+      val ctx = UIContext(context, 1)
         .withSnapGrid(CustomComponents.charSheet.size)
         .moveParentBy(Coords(5, 5))
         .copy(reference = model.count)
@@ -66,8 +70,8 @@ object LabelExample extends IndigoSandbox[Unit, Model]:
         model.copy(label = l)
       }
 
-  def present(context: Context[Unit], model: Model): Outcome[SceneUpdateFragment] =
-    val ctx = UIContext(context, context.frame.globalMagnification)
+  def present(context: Context, model: Model): Outcome[SceneUpdateFragment] =
+    val ctx = UIContext(context, 1)
       .withSnapGrid(CustomComponents.charSheet.size)
       .moveParentBy(Coords(5, 5))
       .copy(reference = model.count)

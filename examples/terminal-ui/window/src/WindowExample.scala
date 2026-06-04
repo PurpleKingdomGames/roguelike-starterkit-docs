@@ -7,8 +7,6 @@ import roguelikestarterkit.*
 import roguelikestarterkit.ui.*
 import generated.*
 
-import scala.scalajs.js.annotation.*
-
 final case class BootData()
 object BootData:
   val empty: BootData =
@@ -23,11 +21,6 @@ final case class Model(num: Int)
 object Model:
   val initial: Model =
     Model(42)
-
-final case class ViewModel()
-object ViewModel:
-  val initial: ViewModel =
-    ViewModel()
 
 final case class Log(message: String) extends GlobalEvent
 
@@ -93,7 +86,7 @@ object ColourWindow:
           .add(
             outrunner16.colors.map { rgba =>
               Button(Bounds(0, 0, 3, 3))(presentSwatch(charSheet, rgba, None))
-                .onClick(Log(s"Clicked on ${rgba.toHexString}"))
+                .onClick(Log(s"Clicked on ${rgba.toHex}"))
                 .presentOver(presentSwatch(charSheet, rgba, Option(RGBA.White)))
                 .presentDown(presentSwatch(charSheet, rgba, Option(RGBA.Black)))
             }
@@ -150,26 +143,25 @@ object ColourWindow:
         )
       )
 
-@JSExportTopLevel("IndigoGame")
-object WindowExample extends IndigoDemo[BootData, StartUpData, Model, ViewModel]:
+class WindowExample() extends Game[BootData, StartUpData, Model]:
 
-  val gameMagnification: Int = 2
+  val gameId: GameId = GameId("window")
 
-  def eventFilters: EventFilters =
+  val eventFilters: EventFilters =
     EventFilters.Permissive
 
   def boot(flags: Map[String, String]): Outcome[BootResult[BootData, Model]] =
     Outcome(
       BootResult(
-        Config.config.noResize.withMagnification(gameMagnification),
+        Config.config,
         BootData.empty
       )
-        .withAssets(Assets.assets.assetSet)
+        .withAssets(Assets.assets.assetSetRelative)
         .withShaders(indigoextras.ui.shaders.all ++ roguelikestarterkit.shaders.all)
         .withSubSystems(
           WindowManager[Model, Unit](
             SubSystemId("window manager"),
-            gameMagnification,
+            1,
             Size(ColourWindow.charSheet.charSize),
             _ => ()
           )
@@ -184,6 +176,12 @@ object WindowExample extends IndigoDemo[BootData, StartUpData, Model, ViewModel]
         )
     )
 
+  def scenes(bootData: BootData): NonEmptyBatch[Scene[StartUpData, Model]] =
+    NonEmptyBatch(Scene.empty)
+
+  def initialScene(bootData: BootData): Option[SceneName] =
+    None
+
   def setup(
       bootData: BootData,
       assetCollection: AssetCollection,
@@ -194,10 +192,7 @@ object WindowExample extends IndigoDemo[BootData, StartUpData, Model, ViewModel]
   def initialModel(startupData: StartUpData): Outcome[Model] =
     Outcome(Model.initial)
 
-  def initialViewModel(startupData: StartUpData, model: Model): Outcome[ViewModel] =
-    Outcome(ViewModel.initial)
-
-  def updateModel(context: Context[StartUpData], model: Model): GlobalEvent => Outcome[Model] =
+  def updateModel(context: Context, model: Model): GlobalEvent => Outcome[Model] =
     case Log(message) =>
       println(message)
       Outcome(model)
@@ -205,18 +200,9 @@ object WindowExample extends IndigoDemo[BootData, StartUpData, Model, ViewModel]
     case _ =>
       Outcome(model)
 
-  def updateViewModel(
-      context: Context[StartUpData],
-      model: Model,
-      viewModel: ViewModel
-  ): GlobalEvent => Outcome[ViewModel] =
-    case _ =>
-      Outcome(viewModel)
-
   def present(
-      context: Context[StartUpData],
-      model: Model,
-      viewModel: ViewModel
+      context: Context,
+      model: Model
   ): Outcome[SceneUpdateFragment] =
     Outcome(
       SceneUpdateFragment(
