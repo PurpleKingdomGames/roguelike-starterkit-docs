@@ -47,7 +47,7 @@ class LabelExample() extends Game[Unit, Unit, Model]:
         .withShaders(indigoextras.ui.shaders.all ++ roguelikestarterkit.shaders.all)
     )
 
-  def scenes(bootData: Unit): NonEmptyBatch[Scene[Unit, Model]] =
+  def scenes(bootData: Unit): NonEmptyBatch[Scene[Model]] =
     NonEmptyBatch(Scene.empty)
 
   def initialScene(bootData: Unit): Option[SceneName] =
@@ -61,7 +61,7 @@ class LabelExample() extends Game[Unit, Unit, Model]:
 
   def updateModel(context: Context, model: Model): GlobalEvent => Outcome[Model] =
     case e =>
-      val ctx = UIContext(context, 1)
+      val ctx = UIContext(context)
         .withSnapGrid(CustomComponents.charSheet.size)
         .moveParentBy(Coords(5, 5))
         .copy(reference = model.count)
@@ -71,11 +71,11 @@ class LabelExample() extends Game[Unit, Unit, Model]:
       }
 
   def present(context: Context, model: Model): Outcome[SceneUpdateFragment] =
-    val ctx = UIContext(context, 1)
+    val ctx = UIContext(context)
       .withSnapGrid(CustomComponents.charSheet.size)
       .moveParentBy(Coords(5, 5))
       .copy(reference = model.count)
 
     model.label
       .present(ctx)
-      .map(l => SceneUpdateFragment(l))
+      .map(l => SceneUpdateFragment(LayerKey("demo") -> l))

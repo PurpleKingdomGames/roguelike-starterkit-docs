@@ -27,7 +27,7 @@ class TerminalMaterialExample() extends Game[Unit, Unit, Model]:
         .withShaders(roguelikestarterkit.shaders.all ++ Set(CustomShader.shader))
     )
 
-  def scenes(bootData: Unit): NonEmptyBatch[Scene[Unit, Model]] =
+  def scenes(bootData: Unit): NonEmptyBatch[Scene[Model]] =
     NonEmptyBatch(Scene.empty)
 
   def initialScene(bootData: Unit): Option[SceneName] =
@@ -57,28 +57,30 @@ class TerminalMaterialExample() extends Game[Unit, Unit, Model]:
 
     Outcome(
       SceneUpdateFragment(
-        Text(
-          message,
-          RoguelikeTiles.Size10x10.Fonts.fontKey,
-          TerminalMaterial(Assets.assets.AnikkiSquare10x10, RGBA.Cyan, RGBA.Blue)
-        ),
-        Text(
-          message,
-          RoguelikeTiles.Size10x10.Fonts.fontKey,
-          TerminalMaterial(Assets.assets.AnikkiSquare10x10, RGBA.Yellow, RGBA.Red)
-            .withShaderId(CustomShader.shader.id)
-        ).moveBy(0, 40),
-        Text(
-          message,
-          RoguelikeTiles.Size10x10.Fonts.fontKey,
-          TerminalMaterial(
-            Assets.assets.AnikkiSquare10x10,
-            RGBA.White,
-            RGBA.Zero,
-            RGBA.Magenta.withAlpha(0.75)
-          )
-        ).moveBy(0, 80)
-      )
+        LayerKey("demo") -> Layer.Content(
+          Text(
+            message,
+            RoguelikeTiles.Size10x10.Fonts.fontKey,
+            TerminalMaterial(Assets.assets.AnikkiSquare10x10, RGBA.Cyan, RGBA.Blue)
+          ),
+          Text(
+            message,
+            RoguelikeTiles.Size10x10.Fonts.fontKey,
+            TerminalMaterial(Assets.assets.AnikkiSquare10x10, RGBA.Yellow, RGBA.Red)
+              .withShaderId(CustomShader.shader.id)
+          ).moveBy(0, 40),
+          Text(
+            message,
+            RoguelikeTiles.Size10x10.Fonts.fontKey,
+            TerminalMaterial(
+              Assets.assets.AnikkiSquare10x10,
+              RGBA.White,
+              RGBA.Zero,
+              RGBA.Magenta.withAlpha(0.75)
+            )
+          ).moveBy(0, 80)
+        )
+      ).withMagnification(Magnification.x2)
     )
 
 object CustomShader:

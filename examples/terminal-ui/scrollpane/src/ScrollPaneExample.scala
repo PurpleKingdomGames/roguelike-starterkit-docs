@@ -64,7 +64,7 @@ class ScrollPaneExample() extends Game[Unit, Unit, Model]:
         .withShaders(indigoextras.ui.shaders.all ++ roguelikestarterkit.shaders.all)
     )
 
-  def scenes(bootData: Unit): NonEmptyBatch[Scene[Unit, Model]] =
+  def scenes(bootData: Unit): NonEmptyBatch[Scene[Model]] =
     NonEmptyBatch(Scene.empty)
 
   def initialScene(bootData: Unit): Option[SceneName] =
@@ -79,7 +79,7 @@ class ScrollPaneExample() extends Game[Unit, Unit, Model]:
   def updateModel(context: Context, model: Model): GlobalEvent => Outcome[Model] =
     case e =>
       val ctx =
-        UIContext(context, 1)
+        UIContext(context)
           .withSnapGrid(CustomComponents.charSheet.size)
           .moveParentBy(Coords(5, 5))
           .copy(reference = model.count)
@@ -90,7 +90,7 @@ class ScrollPaneExample() extends Game[Unit, Unit, Model]:
 
   def present(context: Context, model: Model): Outcome[SceneUpdateFragment] =
     val ctx =
-      UIContext(context, 1)
+      UIContext(context)
         .withSnapGrid(CustomComponents.charSheet.size)
         .moveParentBy(Coords(5, 5))
         .copy(reference = model.count)
@@ -98,12 +98,21 @@ class ScrollPaneExample() extends Game[Unit, Unit, Model]:
     val scrollPaneBorder =
       Shape.Box(
         CustomComponents.scrollPaneBounds
-          .toScreenSpace(CustomComponents.charSheet.size)
-          .moveTo(ctx.parent.coords.toScreenSpace(CustomComponents.charSheet.size)),
+          .toScreenSpace(CustomComponents.charSheet.size, Magnification.x1)
+          .moveTo(
+            ctx.parent.coords.toScreenSpace(CustomComponents.charSheet.size, Magnification.x1)
+          ),
         Fill.None,
         Stroke(1, RGBA.Cyan)
       )
 
     model.component
       .present(ctx)
-      .map(c => SceneUpdateFragment(c).addLayer(scrollPaneBorder))
+      .map { c =>
+        SceneUpdateFragment(
+          LayerKey("demo") -> Layer.Stack(
+            c,
+            Layer.Content(scrollPaneBorder)
+          )
+        )
+      }

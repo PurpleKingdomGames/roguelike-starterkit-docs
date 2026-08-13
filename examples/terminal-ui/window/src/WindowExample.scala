@@ -105,9 +105,9 @@ object ColourWindow:
         )
       )
       .withBackground { bounds =>
-        Layer(
+        Layer.Content(
           Shape.Box(
-            bounds.toScreenSpace(charSheet.size),
+            bounds.toScreenSpace(charSheet.size, Magnification.x1),
             Fill.Color(RGBA.Cyan.withAlpha(0.5))
           )
         )
@@ -120,13 +120,13 @@ object ColourWindow:
   ): (UIContext[Unit], Button[Unit]) => Outcome[Layer] =
     (ctx, btn) =>
       Outcome(
-        Layer(
+        Layer.Content(
           stroke match
             case None =>
               Shape.Box(
                 Rectangle(
-                  ctx.parent.coords.toScreenSpace(charSheet.size),
-                  btn.bounds(ctx).dimensions.toScreenSpace(charSheet.size)
+                  ctx.parent.coords.toScreenSpace(charSheet.size, Magnification.x1),
+                  btn.bounds(ctx).dimensions.toScreenSpace(charSheet.size, Magnification.x1)
                 ),
                 Fill.Color(colour)
               )
@@ -134,8 +134,8 @@ object ColourWindow:
             case Some(strokeColor) =>
               Shape.Box(
                 Rectangle(
-                  ctx.parent.coords.toScreenSpace(charSheet.size),
-                  btn.bounds(ctx).dimensions.toScreenSpace(charSheet.size)
+                  ctx.parent.coords.toScreenSpace(charSheet.size, Magnification.x1),
+                  btn.bounds(ctx).dimensions.toScreenSpace(charSheet.size, Magnification.x1)
                 ),
                 Fill.Color(colour),
                 Stroke(2, strokeColor)
@@ -161,11 +161,11 @@ class WindowExample() extends Game[BootData, StartUpData, Model]:
         .withSubSystems(
           WindowManager[Model, Unit](
             SubSystemId("window manager"),
-            1,
+            LayerKey("windows"),
+            Magnification.x1,
             Size(ColourWindow.charSheet.charSize),
             _ => ()
           )
-            .withLayerKey(LayerKey("windows"))
             .register(
               ColourWindow.window(
                 ColourWindow.charSheet
@@ -176,7 +176,7 @@ class WindowExample() extends Game[BootData, StartUpData, Model]:
         )
     )
 
-  def scenes(bootData: BootData): NonEmptyBatch[Scene[StartUpData, Model]] =
+  def scenes(bootData: BootData): NonEmptyBatch[Scene[Model]] =
     NonEmptyBatch(Scene.empty)
 
   def initialScene(bootData: BootData): Option[SceneName] =

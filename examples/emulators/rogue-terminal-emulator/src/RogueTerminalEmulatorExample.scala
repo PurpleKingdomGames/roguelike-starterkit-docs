@@ -32,7 +32,7 @@ class RogueTerminalEmulatorExample() extends Game[Unit, Unit, Model]:
         .withShaders(roguelikestarterkit.shaders.all)
     )
 
-  def scenes(bootData: Unit): NonEmptyBatch[Scene[Unit, Model]] =
+  def scenes(bootData: Unit): NonEmptyBatch[Scene[Model]] =
     NonEmptyBatch(Scene.empty)
 
   def initialScene(bootData: Unit): Option[SceneName] =
@@ -68,4 +68,4 @@ class RogueTerminalEmulatorExample() extends Game[Unit, Unit, Model]:
         Graphic(10, 10, TerminalMaterial(Assets.assets.AnikkiSquare10x10, fg, bg))
       }
 
-    Outcome(tiles.toSceneUpdateFragment)
+    Outcome(tiles.toSceneUpdateFragment(LayerKey("demo")).withMagnification(Magnification.x3))

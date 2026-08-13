@@ -47,7 +47,7 @@ class TerminalEmulatorExample() extends Game[Unit, Unit, Model]:
         .withShaders(roguelikestarterkit.shaders.all)
     )
 
-  def scenes(bootData: Unit): NonEmptyBatch[Scene[Unit, Model]] =
+  def scenes(bootData: Unit): NonEmptyBatch[Scene[Model]] =
     NonEmptyBatch(Scene.empty)
 
   def initialScene(bootData: Unit): Option[SceneName] =
@@ -83,6 +83,11 @@ class TerminalEmulatorExample() extends Game[Unit, Unit, Model]:
 
       case Some(tiles) =>
         Outcome(
-          SceneUpdateFragment(tiles.clones)
+          SceneUpdateFragment(
+            LayerKey("demo") -> Layer.Content(
+              tiles.clones
+            )
+          )
             .addCloneBlanks(tiles.blanks)
+            .withMagnification(Magnification.x3)
         )

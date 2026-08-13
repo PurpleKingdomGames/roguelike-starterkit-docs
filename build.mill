@@ -1,5 +1,5 @@
 //| mvnDeps:
-//|   - "io.indigoengine:mill-indigo_mill1_3:0.30.0-M1-PREVIEW"
+//|   - "io.indigoengine:mill-indigo_mill1_3:0.30.0-M5-PREVIEW"
 //|   - "org.typelevel::scalac-options:0.1.11"
 
 package build
@@ -15,8 +15,8 @@ import indigoplugin.*
 import org.typelevel.scalacoptions.*
 
 trait RLSKModule extends MillIndigoJS with ScalafmtModule {
-  def scalaVersion   = "3.8.3"
-  def scalaJSVersion = "1.21.0"
+  def scalaVersion   = "3.8.4"
+  def scalaJSVersion = "1.22.0"
 
   override def scalacOptions = Task {
     val baseOptions = ScalacOptions.tokensForVersion(
@@ -60,7 +60,7 @@ trait RLSKModule extends MillIndigoJS with ScalafmtModule {
       .generateConfig("Config")
       .listAssets("Assets")
 
-  val indigoVersion = "0.30.0-M1-PREVIEW"
+  val indigoVersion = "0.30.0-M5-PREVIEW"
 
   def mvnDeps =
     Seq(
