@@ -1,5 +1,5 @@
 //| mvnDeps:
-//|   - "io.indigoengine:mill-indigo_mill1_3:0.30.0-M5-PREVIEW"
+//|   - "io.indigoengine:mill-indigo_mill1_3:0.30.0-M6"
 //|   - "org.typelevel::scalac-options:0.1.11"
 
 package build
@@ -60,7 +60,7 @@ trait RLSKModule extends MillIndigoJS with ScalafmtModule {
       .generateConfig("Config")
       .listAssets("Assets")
 
-  val indigoVersion = "0.30.0-M5-PREVIEW"
+  val indigoVersion = "0.30.0-M6"
 
   def mvnDeps =
     Seq(
